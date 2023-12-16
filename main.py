@@ -1,4 +1,5 @@
 from app.manager import FinancialManager
+from app.models import Transaction, Category
 
 class App:
     def __init__(self):
