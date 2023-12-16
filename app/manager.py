@@ -1,3 +1,5 @@
+import csv
+
 from app.database import Database
 from app.models import Transaction, Category
 
@@ -42,3 +44,10 @@ class FinancialManager:
     def get_all_categories(self):
         self.db.execute_query("SELECT * FROM categories")
         return self.db.fetch_all()
+    
+    def export_transactions_to_csv(self, filename):
+        transactions = self.get_all_transactions()
+        with open(filename, 'w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow(["ID", "Description", "Amount", "Category"])
+            writer.writerows(transactions)

@@ -10,11 +10,11 @@ class App:
             print("\n--- Hoofdmenu ---")
             print("1. Voeg een categorie toe")
             print("2. Bekijk alle categorieën")
-
             if self.manager.get_all_categories():
                 print("3. Voeg een transactie toe")
             print("4. Bekijk alle transacties")
-            print("5. Stop")
+            print("5. Exporteer alle transacties naar CSV")
+            print("6. Stop")
             choice = input("\nMaak een keuze: ")
 
             if choice == "1":
@@ -51,11 +51,17 @@ class App:
                     print(f"{transaction[1]}: {transaction[2]} (Categorie: {transaction[3]})")
 
             elif choice == "5":
+                filename = input("Voer de naam van het CSV-bestand in (zonder .csv): ")
+                self.manager.export_transactions_to_csv(filename + '.csv')
+                print(f"Transacties zijn succesvol geëxporteerd naar {filename}.csv.")
+
+            elif choice == "6":
                 print("\nBedankt voor het gebruiken van onze applicatie. Tot ziens!")
                 break
-            
+
             else:
                 print("\nFout: Ongeldige keuze. Probeer het opnieuw.")
+
 
 if __name__ == "__main__":
     app = App()
