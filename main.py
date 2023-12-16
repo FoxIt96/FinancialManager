@@ -12,10 +12,13 @@ class App:
             print("2. Bekijk alle categorieën")
             if self.manager.get_all_categories():
                 print("3. Voeg een transactie toe")
-            print("4. Bekijk alle transacties")
-            print("5. Exporteer alle transacties naar CSV")
-            print("6. Stop")
-            choice = input("\nMaak een keuze: ")
+                print("4. Bekijk alle transacties")
+                print("5. Bewerk een transactie")
+            if self.manager.get_all_transactions() or self.manager.get_all_categories():
+                print("6. Bewerk een categorie")
+            print("7. Exporteer alle transacties naar CSV")
+            print("8. Stop")
+            choice = input("\nMaak een keuze: ").lower()  # Zet de invoer om naar kleine letters
 
             if choice == "1":
                 name = input("\nVoer een naam in voor de nieuwe categorie: ")
@@ -50,17 +53,36 @@ class App:
                 for transaction in transactions:
                     print(f"{transaction[1]}: {transaction[2]} (Categorie: {transaction[3]})")
 
-            elif choice == "5":
+            elif choice == "5" and self.manager.get_all_transactions():
+                transaction_id = int(input("\nVoer het ID van de transactie in die je wilt bewerken: "))
+                new_description = input("Voer de nieuwe beschrijving in: ")
+                new_amount = float(input("Voer het nieuwe bedrag in: "))
+                new_category_id = int(input("Voer het nieuwe categorie ID in: "))
+                self.manager.edit_transaction(transaction_id, new_description, new_amount, new_category_id)
+                print("Transactie is succesvol bewerkt.")
+
+            elif choice == "6" and (self.manager.get_all_transactions() or self.manager.get_all_categories()):
+                category_id = int(input("\nVoer het ID van de categorie in die je wilt bewerken: "))
+                new_name = input("Voer de nieuwe naam in: ")
+                self.manager.edit_category(category_id, new_name)
+                print("Categorie is succesvol bewerkt.")
+
+            elif choice == "7":
                 filename = input("Voer de naam van het CSV-bestand in (zonder .csv): ")
                 self.manager.export_transactions_to_csv(filename + '.csv')
                 print(f"Transacties zijn succesvol geëxporteerd naar {filename}.csv.")
 
-            elif choice == "6":
+            elif choice == "8":
                 print("\nBedankt voor het gebruiken van onze applicatie. Tot ziens!")
                 break
 
             else:
                 print("\nFout: Ongeldige keuze. Probeer het opnieuw.")
+
+if __name__ == "__main__":
+    app = App()
+    app.run()
+
 
 
 if __name__ == "__main__":
