@@ -5,6 +5,20 @@ class App:
     def __init__(self):
         self.manager = FinancialManager('my_database.db')
 
+    def view_all_transactions(self):
+        print("\n--- Alle transacties ---")
+        transactions = self.manager.get_all_transactions()
+        for transaction in transactions:
+            print(f"{transaction[0]}: {transaction[1]} - {transaction[2]} (Categorie: {transaction[3]})")
+        input("\nDruk op Enter om terug te keren naar het hoofdmenu.")
+
+    def view_all_categories(self):
+        print("\n--- Alle categorieën ---")
+        categories = self.manager.get_all_categories()
+        for category in categories:
+            print(f"{category[0]}: {category[1]}")
+        input("\nDruk op Enter om terug te keren naar het hoofdmenu.")
+
     def run(self):
         while True:
             print("\n--- Hoofdmenu ---")
@@ -19,7 +33,7 @@ class App:
                 print("7. Verwijder een transactie")
                 print("8. Verwijder een categorie")
             print("9. Exporteer alle transacties naar CSV")
-            print("10. Stop")
+            print("10. Exit")
             choice = input("\nMaak een keuze: ").lower()
 
             if choice == "1":
@@ -28,10 +42,7 @@ class App:
                 print(f"Categorie '{name}' is succesvol toegevoegd.")
 
             elif choice == "2":
-                print("\n--- Alle categorieën ---")
-                categories = self.manager.get_all_categories()
-                for category in categories:
-                    print(f"{category[0]}: {category[1]}")
+                self.view_all_categories()
 
             elif choice == "3" and self.manager.get_all_categories():
                 description = input("\nVoer een beschrijving in voor de transactie: ")
@@ -49,10 +60,7 @@ class App:
                     print("Fout: Ongeldig categorie ID.")
 
             elif choice == "4":
-                print("\n--- Alle transacties ---")
-                transactions = self.manager.get_all_transactions()
-                for transaction in transactions:
-                    print(f"{transaction[0]}: {transaction[1]} - {transaction[2]} (Categorie: {transaction[3]})")
+                self.view_all_transactions()
 
             elif choice == "5" and self.manager.get_all_transactions():
                 print("\n--- Beschikbare transacties ---")
