@@ -62,3 +62,26 @@ class FinancialManager:
     def edit_category(self, category_id, new_name):
         query = "UPDATE categories SET name=? WHERE id=?"
         self.db.execute_query(query, (new_name, category_id))
+
+    def delete_transaction(self, transaction_id):
+        query = "DELETE FROM transactions WHERE id=?"
+        self.db.execute_query(query, (transaction_id,))
+
+    def delete_category(self, category_id):
+        query = "DELETE FROM categories WHERE id=?"
+        self.db.execute_query(query, (category_id,))
+
+    def get_transaction_by_id(self, transaction_id):
+        query = """
+            SELECT transactions.id, transactions.description, transactions.amount, categories.name 
+            FROM transactions 
+            INNER JOIN categories ON transactions.category_id = categories.id
+            WHERE transactions.id=?
+        """
+        self.db.execute_query(query, (transaction_id,))
+        return self.db.fetch_one()
+
+    def get_category_by_id(self, category_id):
+        query = "SELECT * FROM categories WHERE id=?"
+        self.db.execute_query(query, (category_id,))
+        return self.db.fetch_one()
