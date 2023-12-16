@@ -28,7 +28,11 @@ class FinancialManager:
         self.db.execute_query(query, (transaction.description, transaction.amount, transaction.category_id))
 
     def get_all_transactions(self):
-        self.db.execute_query("SELECT * FROM transactions")
+        self.db.execute_query("""
+            SELECT transactions.id, transactions.description, transactions.amount, categories.name 
+            FROM transactions 
+            INNER JOIN categories ON transactions.category_id = categories.id
+        """)
         return self.db.fetch_all()
 
     def add_category(self, category):
@@ -38,5 +42,3 @@ class FinancialManager:
     def get_all_categories(self):
         self.db.execute_query("SELECT * FROM categories")
         return self.db.fetch_all()
-
-   
