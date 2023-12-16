@@ -1,5 +1,4 @@
 import csv
-
 from app.database import Database
 from app.models import Transaction, Category
 
@@ -51,3 +50,13 @@ class FinancialManager:
             writer = csv.writer(file)
             writer.writerow(["ID", "Description", "Amount", "Category"])
             writer.writerows(transactions)
+
+    def update_category(self, category):
+        query = "UPDATE categories SET name = ? WHERE id = ?"
+        self.db.execute_query(query, (category.name, category.id))
+        print(f"Categorie '{category.name}' is succesvol bijgewerkt.")
+
+    def update_transaction(self, transaction):
+        query = "UPDATE transactions SET description = ?, amount = ?, category_id = ? WHERE id = ?"
+        self.db.execute_query(query, (transaction.description, transaction.amount, transaction.category_id, transaction.id))
+        print("Transactie is succesvol bijgewerkt.")
