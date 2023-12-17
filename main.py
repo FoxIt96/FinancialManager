@@ -45,13 +45,14 @@ class App:
         while True:
             print("\n--- Hoofdmenu ---")
             print("1. Toevoegen")
-            print("2. Bewerken")
-            print("3. Verwijderen")
-            print("4. Exporteren")
-            print("5. Afsluiten Huidige Maand en Exporteren")
-            print("6. Statistieken")
-            print("7. Grafieken")
-            print("8. Exit")
+            print("2. Bekijken")
+            print("3. Bewerken")
+            print("4. Verwijderen")
+            print("5. Exporteren")
+            print("6. Afsluiten Huidige Maand en Exporteren")
+            print("7. Statistieken")
+            print("8. Grafieken")
+            print("9. Exit")
 
             choice = input("\nMaak een keuze: ").lower()
 
@@ -82,7 +83,19 @@ class App:
                 else:
                     print("\nFout: Ongeldige keuze bij toevoegen.")
 
-            elif choice == "2":
+            elif choice == '2':
+                print("--- Bekijken ---")
+                print("1. Transacties")
+                print("2. Categorieën")
+                view_choice = input("Maak een keuze: ")
+                if view_choice == '1':
+                    self.view_all_transactions()
+                elif view_choice == '2':
+                    self.view_all_categories()
+                else:
+                    print("Ongeldige keuze voor bekijken.")
+
+            elif choice == "3":
                 print("\n--- Bewerken ---")
                 print("1. Bewerk een transactie")
                 print("2. Bewerk een categorie")
@@ -137,7 +150,7 @@ class App:
                 else:
                     print("\nFout: Ongeldige keuze bij bewerken.")
 
-            elif choice == "3":
+            elif choice == "4":
                 print("\n--- Verwijderen ---")
                 print("1. Verwijder een transactie")
                 print("2. Verwijder een categorie")
@@ -170,7 +183,7 @@ class App:
                 else:
                     print("\nFout: Ongeldige keuze bij verwijderen.")
 
-            elif choice == "4":
+            elif choice == "5":
                 print("\n--- Exporteren ---")
                 print("1. Exporteer alle transacties naar CSV")
                 sub_choice = input("\nMaak een keuze: ").lower()
@@ -182,14 +195,14 @@ class App:
                 else:
                     print("\nFout: Ongeldige keuze bij exporteren.")
 
-            elif choice == "5": 
+            elif choice == "6": 
                 print("\n--- Afsluiten Huidige Maand en Exporteren ---")
                 self.manager.close_current_month()
 
-            elif choice == "6":
+            elif choice == "7":
                 self.view_statistics()
 
-            elif choice == "7":
+            elif choice == "8":
                 print("\n--- Grafieken ---")
                 print("1. Plot uitgaven per categorie")
                 print("2. Plot uitgaven per categorie (in percentages)")
@@ -202,7 +215,7 @@ class App:
                 else:
                     print("\nFout: Ongeldige keuze bij plots.")
 
-            elif choice == "8":
+            elif choice == "9":
                 print("\nBedankt voor het gebruiken van onze applicatie. Tot ziens!")
                 break
 
