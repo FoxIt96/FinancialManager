@@ -154,6 +154,8 @@ class App:
                 print("\n--- Verwijderen ---")
                 print("1. Verwijder een transactie")
                 print("2. Verwijder een categorie")
+                print("3. Verwijder alle transacties")
+                print("4. Verwijder alle categorieën")
                 sub_choice = input("\nMaak een keuze: ").lower()
 
                 if sub_choice == "1" and self.manager.get_all_transactions():
@@ -180,6 +182,21 @@ class App:
                         print("Categorie is succesvol verwijderd.")
                     else:
                         print("Fout: Ongeldig categorie ID.")
+                elif sub_choice == "3" and self.manager.get_all_transactions():
+                    confirmation = input("Weet je zeker dat je ALLE transacties wilt verwijderen? (ja/nee): ").lower()
+                    if confirmation == 'ja':
+                        self.manager.delete_all_transactions()
+                        print("Alle transacties zijn succesvol verwijderd.")
+                    else:
+                        print("Verwijderen van alle transacties geannuleerd.")
+
+                elif sub_choice == "4" and self.manager.get_all_categories():
+                    confirmation = input("Weet je zeker dat je ALLE categorieën wilt verwijderen? (ja/nee): ").lower()
+                    if confirmation == 'ja':
+                        self.manager.delete_all_categories()
+                        print("Alle categorieën zijn succesvol verwijderd.")
+                    else:
+                        print("Verwijderen van alle categorieën geannuleerd.")
                 else:
                     print("\nFout: Ongeldige keuze bij verwijderen.")
 

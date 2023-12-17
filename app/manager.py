@@ -163,6 +163,15 @@ class FinancialManager:
         '''
         self.db.execute_query(query)
 
+    def delete_all_transactions(self):
+        query = "DELETE FROM transactions"
+        self.db.execute_query(query)
+
+    def delete_all_categories(self):
+        query = "DELETE FROM categories"
+        self.db.execute_query(query)
+
+
 
 
         
