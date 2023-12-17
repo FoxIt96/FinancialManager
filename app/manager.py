@@ -1,4 +1,6 @@
 import csv
+import numpy as np
+import matplotlib.pyplot as plt
 from app.database import Database
 from app.models import Transaction, Category
 
@@ -24,6 +26,58 @@ class FinancialManager:
             )
         ''')
 
+    def get_transaction_amounts(self):
+        self.db.execute_query("SELECT amount FROM transactions")
+        amounts = [record[0] for record in self.db.fetch_all()]
+        return np.array(amounts)
+
+    def calculate_statistics(self):
+        amounts = self.get_transaction_amounts()
+        if len(amounts) > 0:
+            mean_amount = np.mean(amounts)
+            total_amount = np.sum(amounts)
+            max_amount = np.max(amounts)
+            min_amount = np.min(amounts)
+            return mean_amount, total_amount, max_amount, min_amount
+        else:
+            return None
+
+    def plot_transaction_distribution_per_category(self):
+        transactions = self.get_all_transactions()
+
+        if len(transactions) > 0:
+            categories = set(transaction[3] for transaction in transactions)
+            category_expenses = {category: 0 for category in categories}
+
+            for transaction in transactions:
+                category_expenses[transaction[3]] += transaction[2]
+
+            total_expense = sum(category_expenses.values())
+
+            plt.figure(figsize=(10, 8))
+            plt.pie(category_expenses.values(), labels=category_expenses.keys(), autopct=lambda p: f'€{int(p * total_expense / 100)}')
+            plt.title(f'Uitgaven per Categorie\nTotale Uitgave: €{total_expense}')
+            plt.show()
+        else:
+            print("Geen transacties om te plotten.")
+
+    def plot_transaction_distribution_percentages(self):
+        transactions = self.get_all_transactions()
+
+        if len(transactions) > 0:
+            categories = set(transaction[3] for transaction in transactions)
+            category_expenses = {category: 0 for category in categories}
+
+            for transaction in transactions:
+                category_expenses[transaction[3]] += transaction[2]
+
+            plt.figure(figsize=(10, 8))
+            plt.pie(category_expenses.values(), labels=category_expenses.keys(), autopct='%1.1f%%', startangle=140)
+            plt.title('Uitgaven per Categorie')
+            plt.show()
+        else:
+            print("Geen transacties om te plotten.")   
+                
     def add_transaction(self, transaction):
         query = "INSERT INTO transactions (description, amount, category_id) VALUES (?, ?, ?)"
         self.db.execute_query(query, (transaction.description, transaction.amount, transaction.category_id))

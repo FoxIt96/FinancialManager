@@ -1,3 +1,5 @@
+import numpy as np
+import matplotlib.pyplot as plt
 from app.manager import FinancialManager
 from app.models import Transaction, Category
 
@@ -19,6 +21,26 @@ class App:
             print(f"{category[0]}: {category[1]}")
         input("\nDruk op Enter om terug te keren naar het hoofdmenu.")
 
+    def view_statistics(self):
+        statistics = self.manager.calculate_statistics()
+        if statistics:
+            mean, total, max_value, min_value = statistics
+            print("\n--- Statistieken ---")
+            print(f"Gemiddelde bedrag: {mean}")
+            print(f"Totaal bedrag: {total}")
+            print(f"Maximaal bedrag: {max_value}")
+            print(f"Minimaal bedrag: {min_value}")
+
+            std_dev = np.std(self.manager.get_transaction_amounts())
+            print(f"Standaarddeviatie: {std_dev}")
+
+            input("\nDruk op Enter om terug te keren naar het hoofdmenu.")
+        else:
+            print("Geen transacties voor statistieken.")
+
+    def plot_transaction_distribution(self):
+        self.manager.plot_transaction_distribution()
+
     def run(self):
         while True:
             print("\n--- Hoofdmenu ---")
@@ -32,8 +54,11 @@ class App:
                 print("6. Bewerk een categorie")
                 print("7. Verwijder een transactie")
                 print("8. Verwijder een categorie")
-            print("9. Exporteer alle transacties naar CSV")
+                print("9. Exporteer alle transacties naar CSV")
             print("10. Exit")
+            print("11. Bekijk statistieken")
+            print("12. Plot uitgaven per categorie")
+            print("13. Plot uitgaven per categorie (in percentages)")
             choice = input("\nMaak een keuze: ").lower()
 
             if choice == "1":
@@ -129,7 +154,7 @@ class App:
                 for category in categories:
                     print(f"{category[0]}: {category[1]}")
 
-                category_id = int(input("\nVoer het ID van de categorie in die je wilt verwijderen: "))
+                category_id = int(input("\nVoer het ID van de categ12orie in die je wilt verwijderen: "))
                 if category_id in [cat[0] for cat in categories]:
                     self.manager.delete_category(category_id)
                     print("Categorie is succesvol verwijderd.")
@@ -144,6 +169,15 @@ class App:
             elif choice == "10":
                 print("\nBedankt voor het gebruiken van onze applicatie. Tot ziens!")
                 break
+
+            elif choice == "11":
+                self.view_statistics()
+
+            elif choice == "12":
+                 self.manager.plot_transaction_distribution_per_category()
+
+            elif choice == "13":
+                 self.manager.plot_transaction_distribution_percentages()     
 
             else:
                 print("\nFout: Ongeldige keuze. Probeer het opnieuw.")
