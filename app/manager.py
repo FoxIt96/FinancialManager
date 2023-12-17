@@ -43,6 +43,16 @@ class FinancialManager:
             return mean_amount, total_amount, max_amount, min_amount
         else:
             return None
+        
+    def calculate_category_total(self, category_id):
+        query = """
+            SELECT SUM(amount) 
+            FROM transactions 
+            WHERE category_id=?
+        """
+        self.db.execute_query(query, (category_id,))
+        total_amount = self.db.fetch_one()[0]
+        return total_amount if total_amount is not None else 0.0
 
     def plot_transaction_distribution_per_category(self):
         transactions = self.get_all_transactions()
