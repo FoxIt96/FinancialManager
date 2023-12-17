@@ -48,9 +48,10 @@ class App:
             print("2. Bewerken")
             print("3. Verwijderen")
             print("4. Exporteren")
-            print("5. Statistieken")
-            print("6. Grafieken")
-            print("7. Exit")
+            print("5. Afsluiten Huidige Maand en Exporteren")
+            print("6. Statistieken")
+            print("7. Grafieken")
+            print("8. Exit")
 
             choice = input("\nMaak een keuze: ").lower()
 
@@ -176,15 +177,19 @@ class App:
 
                 if sub_choice == "1":
                     filename = input("Voer de naam van het CSV-bestand in (zonder .csv): ")
-                    self.manager.export_transactions_to_csv(filename + '.csv')
-                    print(f"Transacties zijn succesvol geëxporteerd naar {filename}.csv.")
+                    self.manager.export_transactions_to_csv(filename)
+                    print(f"Transacties zijn succesvol geëxporteerd naar {filename}.")
                 else:
                     print("\nFout: Ongeldige keuze bij exporteren.")
 
-            elif choice == "5":
-                self.view_statistics()
+            elif choice == "5": 
+                print("\n--- Afsluiten Huidige Maand en Exporteren ---")
+                self.manager.close_current_month()
 
             elif choice == "6":
+                self.view_statistics()
+
+            elif choice == "7":
                 print("\n--- Grafieken ---")
                 print("1. Plot uitgaven per categorie")
                 print("2. Plot uitgaven per categorie (in percentages)")
@@ -197,7 +202,7 @@ class App:
                 else:
                     print("\nFout: Ongeldige keuze bij plots.")
 
-            elif choice == "7":
+            elif choice == "8":
                 print("\nBedankt voor het gebruiken van onze applicatie. Tot ziens!")
                 break
 

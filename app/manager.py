@@ -3,6 +3,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from app.database import Database
 from app.models import Transaction, Category
+from datetime import datetime
+
 
 class FinancialManager:
     def __init__(self, db_path):
@@ -100,7 +102,7 @@ class FinancialManager:
 
     def export_transactions_to_csv(self, filename):
         transactions = self.get_all_transactions()
-        with open(filename, 'w', newline='') as file:
+        with open(filename + '.csv', 'w', newline='') as file:
             writer = csv.writer(file)
             writer.writerow(["ID", "Description", "Amount", "Category"])
             writer.writerows(transactions)
@@ -139,3 +141,28 @@ class FinancialManager:
         query = "SELECT * FROM categories WHERE id=?"
         self.db.execute_query(query, (category_id,))
         return self.db.fetch_one()
+
+    def close_current_month(self):
+        confirmation = input("Wil je de huidige maand afsluiten? (ja/nee): ").lower()
+
+        if confirmation == 'ja':
+            today = datetime.now()
+            first_day_of_month = today.replace(day=1)
+
+            filename = f"afsluiting_{today.strftime('%Y-%m')}"
+            self.export_transactions_to_csv(filename)  # Exporteer transacties voordat ze worden verwijderd
+
+            self.zero_out_current_month_transactions()  # Verwijder transacties na exporteren
+            print(f"Huidige maand is afgesloten. Gegevens zijn geëxporteerd naar {filename}.csv.")
+        else:
+            print("Afsluiten geannuleerd.")
+
+    def zero_out_current_month_transactions(self):
+        query = '''
+            DELETE FROM transactions
+        '''
+        self.db.execute_query(query)
+
+
+
+        
