@@ -130,6 +130,7 @@ class FinancialManager:
     def export_transactions_to_csv(self, filename):
         transactions = self.get_all_transactions()
         df = pd.DataFrame(transactions, columns=["ID", "Description", "Amount", "Category"])
+        df["Amount"] = df["Amount"].apply(lambda x: str(x).replace(",", "."))
         df.to_csv(filename + '.csv', index=False, sep=',')
 
     def edit_transaction(self, transaction_id, new_description, new_amount, new_category_id):
