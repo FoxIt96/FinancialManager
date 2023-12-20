@@ -1,4 +1,5 @@
 import csv
+import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from app.database import Database
@@ -67,8 +68,14 @@ class FinancialManager:
             total_expense = sum(category_expenses.values())
 
             plt.figure(figsize=(10, 8))
-            plt.pie(category_expenses.values(), labels=category_expenses.keys(), autopct=lambda p: f'€{int(p * total_expense / 100)}')
+            pie_chart = plt.pie(category_expenses.values(), labels=category_expenses.keys(), startangle=140)
+
+            legend_labels = [f"{category} - €{amount}" for category, amount in category_expenses.items()]
+            legend_patches = plt.legend(legend_labels, loc="best", bbox_to_anchor=(1, 0.5), fontsize=10)
+
             plt.title(f'Uitgaven per Categorie\nTotale Uitgave: €{total_expense}')
+
+            plt.subplots_adjust(left=0.0, bottom=0.1, right=0.65)
             plt.show()
         else:
             print("Geen transacties om te plotten.")
@@ -83,12 +90,22 @@ class FinancialManager:
             for transaction in transactions:
                 category_expenses[transaction[3]] += transaction[2]
 
+            total_expense = sum(category_expenses.values())
+
+            percentages = [amount / total_expense * 100 for amount in category_expenses.values()]
+
             plt.figure(figsize=(10, 8))
-            plt.pie(category_expenses.values(), labels=category_expenses.keys(), autopct='%1.1f%%', startangle=140)
+            pie_chart = plt.pie(percentages, labels=category_expenses.keys(), startangle=140)
+
+            legend_labels = [f"{category} - {percentage:.1f}%" for category, percentage in zip(category_expenses.keys(), percentages)]
+            legend_patches = plt.legend(legend_labels, loc="best", bbox_to_anchor=(1, 0.5), fontsize=10)
+
             plt.title('Uitgaven per Categorie')
+
+            plt.subplots_adjust(left=0.0, bottom=0.1, right=0.65)
             plt.show()
         else:
-            print("Geen transacties om te plotten.")   
+            print("Geen transacties om te plotten.")
                 
     def add_transaction(self, transaction):
         query = "INSERT INTO transactions (description, amount, category_id) VALUES (?, ?, ?)"
@@ -112,10 +129,8 @@ class FinancialManager:
 
     def export_transactions_to_csv(self, filename):
         transactions = self.get_all_transactions()
-        with open(filename + '.csv', 'w', newline='') as file:
-            writer = csv.writer(file)
-            writer.writerow(["ID", "Description", "Amount", "Category"])
-            writer.writerows(transactions)
+        df = pd.DataFrame(transactions, columns=["ID", "Description", "Amount", "Category"])
+        df.to_csv(filename + '.csv', index=False, sep=',')
 
     def edit_transaction(self, transaction_id, new_description, new_amount, new_category_id):
         query = '''
@@ -160,9 +175,9 @@ class FinancialManager:
             first_day_of_month = today.replace(day=1)
 
             filename = f"afsluiting_{today.strftime('%Y-%m')}"
-            self.export_transactions_to_csv(filename)  # Exporteer transacties voordat ze worden verwijderd
+            self.export_transactions_to_csv(filename) 
 
-            self.zero_out_current_month_transactions()  # Verwijder transacties na exporteren
+            self.zero_out_current_month_transactions() 
             print(f"Huidige maand is afgesloten. Gegevens zijn geëxporteerd naar {filename}.csv.")
         else:
             print("Afsluiten geannuleerd.")
