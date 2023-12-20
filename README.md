@@ -33,4 +33,4 @@ De applicatie biedt ook de mogelijkheid om statistieken en grafieken weer te gev
 7. **Statistieken:** Hiermee kun je algemene statistieken en statistieken per categorie bekijken.
 8. **Grafieken:** Hiermee kun je grafieken genereren om de verdeling van transacties per categorie te visualiseren.
 
-Veel plezier met het beheren van je uitgaven!
+Veel plezier met het beheren van je uitgaven! 📊💰
