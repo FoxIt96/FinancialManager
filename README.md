@@ -1,6 +1,6 @@
 # Financial Manager App
 
-Dit is een eenvoudige financiële manager applicatie die je helpt om je inkomsten en uitgaven bij te houden.
+Dit is een eenvoudige financiële manager applicatie die je helpt om je uitgaven bij te houden.
 
 ## Aan de slag
 
