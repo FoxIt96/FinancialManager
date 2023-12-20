@@ -7,7 +7,8 @@ Dit is een eenvoudige financiële manager applicatie die je helpt om je inkomste
 1. Kloon de repository.
 2. Maak een virtuele omgeving (`venv`).
 3. Installeer de afhankelijkheden met `pip install -r requirements.txt`.
-4. Voer de applicatie uit.
+4. Plaats het databasebestand (`my_database.db`) in de hoofdmap van het project.
+5. Voer de applicatie uit (`main.py`).
 
 ## Gebruik
 
